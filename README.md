@@ -118,3 +118,33 @@ getPrice(-1, stock * 2, true, price) === "Invalid order.";
 | ${true}            | ${true}            | ${false}          | ${order \* price}       |
 | ${true}            | ${false}           | ${false}          | ${stock \* price}       |
 | ${false}           | ${table.cell.any}  | ${table.cell.any} | ${"Invalid order."}     |
+
+### セルの値の指定
+
+`const table = new ThinRichTable()`とした場合
+
+| 値                     | 内容                                   |
+| ---------------------- | -------------------------------------- |
+| `table.out`            | 出力値とする列(表の右端の列に指定する) |
+| `table.cell.any`       | 任意の値(明示的な指定と同じ優先度)     |
+| `table.cell.otherwise` | 任意の値(`cell.any`より優先度低)       |
+
+例えば下記の場合は`{ flagA: true, flagB: true }`の場合両方にマッチするため重複エラーとなる。
+
+| pattern   | ${flagA} | ${flagB}          | ${table.out} |
+| --------- | -------- | ----------------- | ------------ |
+| both true | ${true}  | ${true}           | ${true}      |
+| else      | ${true}  | ${table.cell.any} | ${false}     |
+
+下記の場合
+
+| pattern   | ${flagA} | ${flagB}                | ${table.out} |
+| --------- | -------- | ----------------------- | ------------ |
+| both true | ${true}  | ${true}                 | ${true}      |
+| else      | ${true}  | ${table.cell.otherwise} | ${false}     |
+
+- `{ flagA: true, flagB: true }` => `both true`
+- `{ flagA: true, flagB: false }` => `else`
+- `{ flagA: true, flagB: undefined }` => `else`
+
+となり評価される。
