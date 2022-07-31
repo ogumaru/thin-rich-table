@@ -13,6 +13,12 @@
 
 ヘッダ行で指定された変数に対し、真理値表形式で記述した条件をもとに評価を行う。
 
+## インストール
+
+```bash
+npm install --save thin-rich-table
+```
+
 ## 使い方
 
 ```javascript
