@@ -37,17 +37,16 @@ export class ThinRichTable {
     if (!isCalledAsTagged(strings, vars)) {
       throw TRExceptions.notCalledAsTaggedError;
     }
-    // `this.out` needs to be defined on the end of table header.
-    const columnIndex = vars.indexOf(this.out);
-    if (columnIndex < 0) {
+
+    const outputColumns = vars.filter((variable) => variable === this.out);
+    if (outputColumns.length > 1) {
+      throw TRExceptions.duplicatedOutputError;
+    } else if (outputColumns.length < 1) {
       throw TRExceptions.notDefinedOutputError;
     }
 
-    const outputColumns = vars.filter((variable) => variable === this.out);
-    if (outputColumns.length !== 1) {
-      throw TRExceptions.duplicatedOutputError;
-    }
-
+    // `this.out` needs to be defined on the end of table header.
+    const columnIndex = vars.indexOf(this.out);
     const columnCount = columnIndex + 1;
     if (vars.length % columnCount !== 0) {
       throw TRExceptions.notMatchedColumnCountError;
