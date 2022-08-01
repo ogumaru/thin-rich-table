@@ -102,10 +102,10 @@ const getPriceTable = (
     `
 };
 
-getPrice(order, stock, true, price) === (stock * price) / 2;
-getPrice(order, stock, false, price) === stock * price;
-getPrice(order, stock * 2, true, price) === (order * price) / 2;
-getPrice(-1, stock * 2, true, price) === "Invalid order.";
+getPriceTable(order, stock, true, price) === (stock * price) / 2;
+getPriceTable(order, stock, false, price) === stock * price;
+getPriceTable(order, stock * 2, true, price) === (order * price) / 2;
+getPriceTable(-1, stock * 2, true, price) === "Invalid order.";
 ```
 
 上記のテーブル部分は Markdown で下記表に相当する。
@@ -118,6 +118,24 @@ getPrice(-1, stock * 2, true, price) === "Invalid order.";
 | ${true}            | ${true}            | ${false}          | ${order \* price}       |
 | ${true}            | ${false}           | ${false}          | ${stock \* price}       |
 | ${false}           | ${table.cell.any}  | ${table.cell.any} | ${"Invalid order."}     |
+
+ヘッダ行に`true`, `false`などを指定し、条件列に評価値を記載することもできる。
+
+```javascript
+const getMessage = (x: number, y: number, limit: number) => {
+  const table = new ThinRichTable();
+  return table.eval`
+  | ${true}       | ${true}       | ${table.out}           |
+  | ------------- | ------------- | ---------------------- |
+  | ${x > limit}  | ${y > limit}  | ${`x & y > ${limit}`}  |
+  | ${x > limit}  | ${y <= limit} | ${`x > ${limit}`}      |
+  | ${x <= limit} | ${y > limit}  | ${`y > ${limit}`}      |
+  | ${x <= limit} | ${y <= limit} | ${`x & y <= ${limit}`} |
+  `;
+};
+
+getMessage(122, 50, 100) === "x > 100";
+```
 
 ### セルの値の指定
 

@@ -276,3 +276,19 @@ describe("論理回路的利用", () => {
     expect(XOR(true, true)).toBe(false);
   });
 });
+
+describe("【OK】ヘッダーがリテラル、条件行が評価値", () => {
+  const getMessage = (x: number, y: number, limit: number) => {
+    const table = new ThinRichTable();
+    return table.eval`
+    | ${true}       | ${true}       | ${table.out}           |
+    | ------------- | ------------- | ---------------------- |
+    | ${x > limit}  | ${y > limit}  | ${`x & y > ${limit}`}  |
+    | ${x > limit}  | ${y <= limit} | ${`x > ${limit}`}      |
+    | ${x <= limit} | ${y > limit}  | ${`y > ${limit}`}      |
+    | ${x <= limit} | ${y <= limit} | ${`x & y <= ${limit}`} |
+    `;
+  };
+
+  expect(getMessage(122, 50, 100)).toBe("x > 100");
+});
