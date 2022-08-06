@@ -1,25 +1,34 @@
 # Thin Rich Table
 
-## これなに
+## これなに / About
 
 マークダウンの表形式で書いた真理値表(風のテーブル)を評価するやつ。
 
-## コンセプト
+The one to evaluate a truth table-style table written in Markdown.
+
+## コンセプト / Concept
 
 - Thin (ファイルサイズが軽量)
 - Rich (Markdown のテーブル記法を利用できる)
 
 を特徴とする。
 
+It features the following
+
+- Thin (Lightweight file size)
+- Rich (Markdown table notation can be used)
+
 ヘッダ行で指定された変数に対し、真理値表形式で記述した条件をもとに評価を行う。
 
-## インストール
+This evaluates variables specified in the header line based on the conditions described in a truth table format.
+
+## インストール / Install
 
 ```bash
 npm install --save thin-rich-table
 ```
 
-## 使い方
+## 使い方 / How to Use
 
 ```javascript
 import { ThinRichTable } from "thin-rich-table";
@@ -31,7 +40,7 @@ Write markdown table like conditions here.
 
 ### 例
 
-AND 回路
+AND 回路 / AND circuit
 
 ```javascript
 const AND = (a: boolean, b: boolean) => {
@@ -51,9 +60,13 @@ AND(true, false) === false;
 
 複雑な条件の場合など、`any`や`otherwise`を指定することもできる。
 
+`any` or `otherwise` may be specified, for example ,for complex conditions.
+
 表の行にはリテラル形式でコメントを記述することもできる。
 
-金額計算
+You can write comments in table rows in literal format.
+
+金額計算 / Calculating the amount of money
 
 ```javascript
 // 注文数
@@ -137,17 +150,19 @@ const getMessage = (x: number, y: number, limit: number) => {
 getMessage(122, 50, 100) === "x > 100";
 ```
 
-### セルの値の指定
+### セルの値の指定 / On specifying cell values
 
 `const table = new ThinRichTable()`とした場合
 
-| 値                     | 内容                                   |
-| ---------------------- | -------------------------------------- |
-| `table.out`            | 出力値とする列(表の右端の列に指定する) |
-| `table.cell.any`       | 任意の値(明示的な指定と同じ優先度)     |
-| `table.cell.otherwise` | 任意の値(`cell.any`より優先度低)       |
+| 値                     | 内容                                                                                                      |
+| ---------------------- | --------------------------------------------------------------------------------------------------------- |
+| `table.out`            | 出力値とする列(表の右端の列に指定する)<br>Column as output (Specify in the rightmost column of the table) |
+| `table.cell.any`       | 任意の値(明示的な指定と同じ優先度)<br>Arbitrary value (Same priority as explicit specification)           |
+| `table.cell.otherwise` | 任意の値(`cell.any`より優先度低)<br>Arbitrary value (Lower priority than `cell.any`)                      |
 
 例えば下記の場合は`{ flagA: true, flagB: true }`の場合両方にマッチするため重複エラーとなる。
+
+For example, in case the following table is defined `{ flagA: true, flagB: true }` matches both, resulting in a duplicate error.
 
 | pattern   | ${flagA} | ${flagB}          | ${table.out} |
 | --------- | -------- | ----------------- | ------------ |
@@ -155,6 +170,8 @@ getMessage(122, 50, 100) === "x > 100";
 | else      | ${true}  | ${table.cell.any} | ${false}     |
 
 下記の場合
+
+In the following case
 
 | pattern   | ${flagA} | ${flagB}                | ${table.out} |
 | --------- | -------- | ----------------------- | ------------ |
@@ -166,3 +183,5 @@ getMessage(122, 50, 100) === "x > 100";
 - `{ flagA: true, flagB: undefined }` => `else`
 
 となり評価される。
+
+and as a result, will be evaluated.
