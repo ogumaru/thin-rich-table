@@ -1,7 +1,7 @@
 {
   "name": "thin-rich-table",
   "version": "1.0.0",
-  "description": "",
+  "description": "Evaluate a truth table written in Markdown.",
   "files": [
     "dist",
     "src"
