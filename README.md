@@ -68,14 +68,11 @@ You can write comments in table rows in literal format.
 
 金額計算 / Calculating the amount of money
 
-```javascript
-// 注文数
-const order = 100;
-// 在庫数
-const stock = 50;
-// 単価
-const price = 10;
+`if`を利用した場合、下記のように複雑になることがある。
 
+Like the following, there are times it be complicated branch when using `if` .
+
+```javascript
 // ifを利用した記述
 const getPriceIf = (
   order: number,
@@ -93,8 +90,20 @@ const getPriceIf = (
   }
   // ...
 };
+```
 
-// 本ライブラリを利用した記述
+本ライブラリを利用すると表を用いて宣言的に評価できる。
+
+You can evaluate declaratively with table by using this library.
+
+```javascript
+// 注文数
+const order = 100;
+// 在庫数
+const stock = 50;
+// 単価
+const price = 10;
+
 const getPriceTable = (
   order: number,
   stock: number,
