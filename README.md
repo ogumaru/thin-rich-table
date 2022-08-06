@@ -13,14 +13,22 @@ The one to evaluate a truth table-style table written in Markdown.
 
 を特徴とする。
 
+<div class="en" style="color: gray">
+
 It features the following
 
 - Thin (Lightweight file size)
 - Rich (Markdown table notation can be used)
 
+</div>
+
 ヘッダ行で指定された変数に対し、真理値表形式で記述した条件をもとに評価を行う。
 
+<div class="en" style="color: gray">
+
 This evaluates variables specified in the header line based on the conditions described in a truth table format.
+
+</div>
 
 ## インストール / Install
 
@@ -40,7 +48,7 @@ Write markdown table like conditions here.
 
 ### 例
 
-AND 回路 / AND circuit
+**AND 回路 / AND circuit**
 
 ```javascript
 const AND = (a: boolean, b: boolean) => {
@@ -64,13 +72,21 @@ AND(true, false) === false;
 
 表の行にはリテラル形式でコメントを記述することもできる。
 
+<div class="en" style="color: gray">
+
 You can write comments in table rows in literal format.
 
-金額計算 / Calculating the amount of money
+</div>
+
+**金額計算 / Calculating the amount of money**
 
 `if`を利用した場合、下記のように複雑になることがある。
 
+<div class="en" style="color: gray">
+
 Like the following, there are times it be complicated branch when using `if` .
+
+</div>
 
 ```javascript
 // ifを利用した記述
@@ -94,7 +110,11 @@ const getPriceIf = (
 
 本ライブラリを利用すると表を用いて宣言的に評価できる。
 
+<div class="en" style="color: gray">
+
 You can evaluate declaratively with table by using this library.
+
+</div>
 
 ```javascript
 // 注文数
@@ -171,7 +191,11 @@ getMessage(122, 50, 100) === "x > 100";
 
 例えば下記の場合は`{ flagA: true, flagB: true }`の場合両方にマッチするため重複エラーとなる。
 
+<div class="en" style="color: gray">
+
 For example, in case the following table is defined `{ flagA: true, flagB: true }` matches both, resulting in a duplicate error.
+
+</div>
 
 | pattern   | ${flagA} | ${flagB}          | ${table.out} |
 | --------- | -------- | ----------------- | ------------ |
@@ -193,4 +217,6 @@ In the following case
 
 となり評価される。
 
+<div class="en" style="color: gray">
 and as a result, will be evaluated.
+</div>
