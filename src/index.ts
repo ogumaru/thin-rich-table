@@ -16,7 +16,7 @@ import {
 export class ThinRichTable {
   public out: Symbol;
   public cell: cellSymbols;
-  public internals: internalSymbols;
+  #internals: internalSymbols;
 
   constructor() {
     this.out = Symbol("out");
@@ -24,13 +24,15 @@ export class ThinRichTable {
       any: Symbol("any"),
       otherwise: Symbol("otherwise"),
     };
-    this.internals = {
+    this.#internals = {
+      // `undefined` is used for cell value,
+      // so It be defined "undefined" symbol as internal use.
       undefined: Symbol("undefined"),
     };
   }
 
   #getOutputFromArray(headers: headerRow, row: conditionsRow) {
-    const symbols = { ...this.cell, ...this.internals, out: this.out };
+    const symbols = { ...this.cell, ...this.#internals, out: this.out };
     return getOutputFromArray(headers, row, symbols);
   }
 
@@ -72,7 +74,7 @@ export class ThinRichTable {
     for (const rows of [normalRows, otherwiseRows]) {
       for (const row of rows) {
         const output = this.#getOutputFromArray(headers, row);
-        if (output === this.internals.undefined) continue;
+        if (output === this.#internals.undefined) continue;
         matched.push({ row, output });
       }
 
