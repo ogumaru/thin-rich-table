@@ -1,5 +1,5 @@
 import { splitArrayAsNLength } from "./collection";
-import { Row_t, cellSymbols, internalSymbols } from "./types";
+import type { Row_t, cellSymbols, internalSymbols } from "./types";
 import { TRExceptions } from "./exception";
 import {
   getOutputFromArray,

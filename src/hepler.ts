@@ -1,6 +1,6 @@
 import { hasDuplicated } from "./collection";
 import deepEqual from "deep-equal";
-import { Row_t, cellSymbols, internalSymbols } from "./types";
+import type { Row_t, cellSymbols, internalSymbols } from "./types";
 
 export const getOutputFromArray = (
   headers: Row_t,
