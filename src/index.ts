@@ -1,5 +1,10 @@
 import { splitArrayAsNLength } from "./collection";
-import type { Row_t, cellSymbols, internalSymbols } from "./types";
+import type {
+  conditionsRow,
+  headerRow,
+  cellSymbols,
+  internalSymbols,
+} from "./types";
 import { TRExceptions } from "./exception";
 import {
   getOutputFromArray,
@@ -24,16 +29,16 @@ export class ThinRichTable {
     };
   }
 
-  #getOutputFromArray(headers: Row_t, row: Row_t) {
+  #getOutputFromArray(headers: headerRow, row: conditionsRow) {
     const symbols = { ...this.cell, ...this.internals, out: this.out };
     return getOutputFromArray(headers, row, symbols);
   }
 
-  #hasDuplicatedConditions(rows: Row_t[], outputIndex: number) {
+  #hasDuplicatedConditions(rows: conditionsRow[], outputIndex: number) {
     return hasDuplicatedRowExcept(rows, outputIndex);
   }
 
-  eval(strings: TemplateStringsArray, ...vars: Row_t) {
+  eval(strings: TemplateStringsArray, ...vars: unknown[]) {
     if (!isCalledAsTagged(strings, vars)) {
       throw TRExceptions.notCalledAsTaggedError;
     }
@@ -53,14 +58,14 @@ export class ThinRichTable {
     }
 
     const splitted = splitArrayAsNLength(vars, columnCount);
-    const headers = splitted[0];
-    const rows = splitted.splice(1);
+    const headers = splitted[0] as headerRow;
+    const rows = splitted.splice(1) as conditionsRow[];
 
     if (this.#hasDuplicatedConditions(rows, columnIndex)) {
       throw TRExceptions.duplicatedConditionError;
     }
 
-    const matched = [] as Array<{ row: unknown[]; output: unknown }>;
+    const matched = [] as Array<{ row: conditionsRow; output: unknown }>;
     const [normalRows, otherwiseRows] = splitConditionsOtherwise(rows, {
       ...this.cell,
     });

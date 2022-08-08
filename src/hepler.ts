@@ -1,10 +1,15 @@
 import { hasDuplicated } from "./collection";
 import deepEqual from "deep-equal";
-import type { Row_t, cellSymbols, internalSymbols } from "./types";
+import type {
+  conditionsRow,
+  cellSymbols,
+  internalSymbols,
+  headerRow,
+} from "./types";
 
 export const getOutputFromArray = (
-  headers: Row_t,
-  row: Row_t,
+  headers: headerRow,
+  row: conditionsRow,
   symbol: cellSymbols & internalSymbols & { out: Symbol }
 ) => {
   let result: unknown = symbol.undefined;
@@ -22,7 +27,10 @@ export const getOutputFromArray = (
   return result;
 };
 
-export const hasDuplicatedRowExcept = (rows: Row_t[], exceptIndex: number) => {
+export const hasDuplicatedRowExcept = (
+  rows: conditionsRow[],
+  exceptIndex: number
+) => {
   const conditions = rows.map((row) =>
     row.filter((_, index) => index !== exceptIndex)
   );
@@ -30,7 +38,7 @@ export const hasDuplicatedRowExcept = (rows: Row_t[], exceptIndex: number) => {
 };
 
 export const splitConditionsOtherwise = (
-  rows: Row_t[],
+  rows: conditionsRow[],
   symbols: cellSymbols
 ) => {
   const normal = rows.filter((row) => !row.includes(symbols.otherwise));
