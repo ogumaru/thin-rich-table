@@ -1,5 +1,7 @@
 # Thin Rich Table
 
+[![Node.js CI](https://github.com/ogumaru/thin-rich-table/actions/workflows/node.js.yml/badge.svg)](https://github.com/ogumaru/thin-rich-table/actions/workflows/node.js.yml)
+
 ## これなに / About
 
 マークダウンの表形式で書いた真理値表(風のテーブル)を評価するやつ。
