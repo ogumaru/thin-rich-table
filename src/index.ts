@@ -1,5 +1,10 @@
 import { splitArrayAsNLength } from "./collection";
-import { Row_t, cellSymbols, internalSymbols } from "./types";
+import type {
+  conditionsRow,
+  headerRow,
+  cellSymbols,
+  internalSymbols,
+} from "./types";
 import { TRExceptions } from "./exception";
 import {
   getOutputFromArray,
@@ -11,7 +16,7 @@ import {
 export class ThinRichTable {
   public out: Symbol;
   public cell: cellSymbols;
-  public internals: internalSymbols;
+  #internals: internalSymbols;
 
   constructor() {
     this.out = Symbol("out");
@@ -19,21 +24,23 @@ export class ThinRichTable {
       any: Symbol("any"),
       otherwise: Symbol("otherwise"),
     };
-    this.internals = {
+    this.#internals = {
+      // `undefined` is used for cell value,
+      // so It be defined "undefined" symbol as internal use.
       undefined: Symbol("undefined"),
     };
   }
 
-  #getOutputFromArray(headers: Row_t, row: Row_t) {
-    const symbols = { ...this.cell, ...this.internals, out: this.out };
+  #getOutputFromArray(headers: headerRow, row: conditionsRow) {
+    const symbols = { ...this.cell, ...this.#internals, out: this.out };
     return getOutputFromArray(headers, row, symbols);
   }
 
-  #hasDuplicatedConditions(rows: Row_t[], outputIndex: number) {
+  #hasDuplicatedConditions(rows: conditionsRow[], outputIndex: number) {
     return hasDuplicatedRowExcept(rows, outputIndex);
   }
 
-  eval(strings: TemplateStringsArray, ...vars: Row_t) {
+  eval(strings: TemplateStringsArray, ...vars: unknown[]) {
     if (!isCalledAsTagged(strings, vars)) {
       throw TRExceptions.notCalledAsTaggedError;
     }
@@ -53,21 +60,21 @@ export class ThinRichTable {
     }
 
     const splitted = splitArrayAsNLength(vars, columnCount);
-    const headers = splitted[0];
-    const rows = splitted.splice(1);
+    const headers = splitted[0] as headerRow;
+    const rows = splitted.splice(1) as conditionsRow[];
 
     if (this.#hasDuplicatedConditions(rows, columnIndex)) {
       throw TRExceptions.duplicatedConditionError;
     }
 
-    const matched = [] as Array<{ row: unknown[]; output: unknown }>;
+    const matched = [] as Array<{ row: conditionsRow; output: unknown }>;
     const [normalRows, otherwiseRows] = splitConditionsOtherwise(rows, {
       ...this.cell,
     });
     for (const rows of [normalRows, otherwiseRows]) {
       for (const row of rows) {
         const output = this.#getOutputFromArray(headers, row);
-        if (output === this.internals.undefined) continue;
+        if (output === this.#internals.undefined) continue;
         matched.push({ row, output });
       }
 
